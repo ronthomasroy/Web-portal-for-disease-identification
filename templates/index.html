@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Health Portal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .header p {
+            margin: 0.5rem 0 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        .image-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .image-container img {
+            width: 30%;
+            height: auto;
+            border-radius: 5px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, textarea, input[type="file"], input[type="submit"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        #responseSection {
+            background-color: #e9e9e9;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Farm Health Portal</h1>
+        <p>AI-powered disease diagnosis and reporting for crops and livestock</p>
+    </div>
+
+    <div class="container">
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='cow.png') }}" alt="Cow">
+            <img src="{{ url_for('static', filename='goat.png') }}" alt="Goat" class="goat">
+            <img src="{{ url_for('static', filename='hord.png') }}" alt="Herd" class="hord">
+        </div>
+
+        <section>
+            <h2>Report Disease Symptoms</h2>
+            <form id="predict-form">
+                <label for="type">Crop/Livestock Type:</label>
+                <select name="type" id="type" required>
+                    <option value="">Select</option>
+                    <option value="Crop">Crop</option>
+                    <option value="Livestock">Livestock</option>
+                </select>
+
+                <label for="symptoms">Describe Symptoms:</label>
+                <textarea name="symptoms" id="symptoms" required></textarea>
+
+                <label for="image">Upload Image:</label>
+                <input type="file" name="image" id="image">
+
+                <input type="submit" value="Submit">
+            </form>
+
+            <div id="responseSection">
+                <h2>Diagnosis and Recommendations</h2>
+                <p id="result">Awaiting submission...</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© BY FANUMTAX</p>
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            $('#predict-form').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/predict',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#result').text('Predicted Disease for ' + response.type + ': ' + response.prediction);
+                    },
+                    error: function(xhr, status, error) {
+                        $('#result').text('Error: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
