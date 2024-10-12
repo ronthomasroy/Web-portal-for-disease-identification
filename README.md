@@ -42,8 +42,8 @@ The backend is designed using **Flask**, which serves as the API that connects t
 
 1. **Clone the Repository**:
    ```
-   git clone https://github.com/your-username/your-repository.git
-   cd your-repository
+   git clone https://github.com/ronthomasroy/Web-portal-for-disease-identification.git
+   cd Web-portal-for-disease-identification
    ```
 
 2. **Install Dependencies**:
